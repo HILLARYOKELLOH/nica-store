@@ -15,7 +15,7 @@ export async function getUserByEmail(email: string) {
   return prisma.user.findUnique({ where: { email: email.toLowerCase() } });
 }
 
-export async function createUser(data: Omit<User, 'createdAt'>) {
+export async function createUser(data: Omit<User, 'createdAt' | 'updatedAt'>) {
   return prisma.user.create({ data });
 }
 
