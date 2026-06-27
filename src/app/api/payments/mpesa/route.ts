@@ -32,7 +32,6 @@ export async function POST(req: NextRequest) {
       mpesaRef,
       paymentStatus: 'paid',
       status: 'confirmed',
-      updatedAt: new Date().toISOString(),
     });
 
     return NextResponse.json({
