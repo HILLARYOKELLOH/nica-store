@@ -1,5 +1,5 @@
 import { prisma } from '@/lib/prisma';
-import { User, Product, Order } from '@/types';
+import { User, Product } from '@/types';
 
 // ── Users ──────────────────────────────────────────
 
@@ -70,12 +70,34 @@ export async function getOrdersByUser(userId: string) {
   });
 }
 
-export async function createOrder(data: { userId: string; total: number; items: { productId: string; quantity: number; price: number }[] }) {
+export async function createOrder(data: {
+  id: string;
+  userId: string;
+  userName: string;
+  userEmail: string;
+  subtotal: number;
+  deliveryFee: number;
+  total: number;
+  paymentMethod: string;
+  paymentStatus: string;
+  mpesaPhone?: string;
+  mpesaRef?: string;
+  status: string;
+  address: string;
+  notes?: string;
+  items: {
+    productId: string;
+    productName: string;
+    productImage: string;
+    quantity: number;
+    price: number;
+  }[];
+}) {
+  const { items, ...orderData } = data;
   return prisma.order.create({
     data: {
-      userId: data.userId,
-      total: data.total,
-      items: { create: data.items },
+      ...orderData,
+      items: { create: items },
     },
     include: { items: true },
   });
