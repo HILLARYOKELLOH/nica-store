@@ -20,7 +20,6 @@ export async function POST(req: NextRequest) {
     }
 
     const hashedPw = await hashPassword(password);
-    const now = new Date().toISOString();
     const user = await createUser({
       id: 'usr_' + uuidv4().replace(/-/g, '').slice(0, 12),
       name: name.trim(),
@@ -29,8 +28,6 @@ export async function POST(req: NextRequest) {
       role: 'user',
       phone: phone || '',
       address: '',
-      createdAt: now,
-      updatedAt: now,
     });
 
     const token = signToken({ id: user.id, email: user.email, role: user.role });
