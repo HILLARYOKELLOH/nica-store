@@ -103,9 +103,6 @@ export async function createOrder(data: {
   });
 }
 
-// export async function updateOrder(id: string, data: { status?: string }) {
-//   return prisma.order.update({ where: { id }, data });
-// }// force rebuild
 export async function updateOrder(id: string, data: {
   status?: string;
   paymentStatus?: string;
