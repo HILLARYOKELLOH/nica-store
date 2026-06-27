@@ -1,0 +1,55 @@
+[
+  {
+    "id": "NS-ORDER-001",
+    "userId": "usr_user_001",
+    "userName": "Jane Wanjiku",
+    "userEmail": "jane@example.com",
+    "items": [
+      {
+        "productId": "prod_001",
+        "productName": "Premium Wireless Headphones",
+        "productImage": "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600&q=80",
+        "price": 8999,
+        "quantity": 1
+      }
+    ],
+    "subtotal": 8999,
+    "deliveryFee": 0,
+    "total": 8999,
+    "paymentMethod": "mpesa",
+    "paymentStatus": "paid",
+    "mpesaPhone": "+254711222333",
+    "mpesaRef": "QKB8XHYT92",
+    "status": "pending",
+    "address": "Westlands, Nairobi",
+    "createdAt": "2024-03-10T09:00:00.000Z",
+    "updatedAt": "2026-06-26T10:55:21.039Z"
+  },
+  {
+    "id": "NS-MQUTG4KE-XYP3",
+    "userId": "usr_admin_001",
+    "userName": "admin",
+    "userEmail": "admin@nicastore.co.ke",
+    "items": [
+      {
+        "productId": "prod_012",
+        "productName": "Skincare Glow Set",
+        "productImage": "https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=600&q=80",
+        "price": 4500,
+        "quantity": 1
+      }
+    ],
+    "subtotal": 4500,
+    "deliveryFee": 0,
+    "total": 4500,
+    "paymentMethod": "mpesa",
+    "paymentStatus": "paid",
+    "mpesaPhone": "254700000001",
+    "status": "confirmed",
+    "address": "Nairobi, Kenya",
+    "notes": "",
+    "createdAt": "2026-06-26T10:56:37.406Z",
+    "updatedAt": "2026-06-26T10:56:40.581Z",
+    "mpesaRef": "QK8Y0SWT28"
+  }
+]

@@ -1,0 +1,35 @@
+[
+  {
+    "id": "usr_admin_001",
+    "name": "Nica Admin",
+    "email": "admin@nicastore.co.ke",
+    "password": "$2b$12$nUYPfzROX0ftuFKq3RdVRejZEf9e1AhLakEGsHkDFrrTV3BfceGwC",
+    "role": "admin",
+    "phone": "+254 700 000 001",
+    "address": "Nairobi, Kenya",
+    "createdAt": "2024-01-01T00:00:00.000Z",
+    "updatedAt": "2024-01-01T00:00:00.000Z"
+  },
+  {
+    "id": "usr_user_001",
+    "name": "Jane Wanjiku",
+    "email": "jane@example.com",
+    "password": "$2a$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LewdBPj0IzLqlVhi6",
+    "role": "user",
+    "phone": "+254 711 222 333",
+    "address": "Westlands, Nairobi",
+    "createdAt": "2024-02-01T00:00:00.000Z",
+    "updatedAt": "2024-02-01T00:00:00.000Z"
+  },
+  {
+    "id": "usr_ac315069221d",
+    "name": "HILLARY OPANY",
+    "email": "archigreensolutions603@gmail.com",
+    "password": "$2b$12$nUYPfzROX0ftuFKq3RdVRejZEf9e1AhLakEGsHkDFrrTV3BfceGwC",
+    "role": "user",
+    "phone": "0712324566",
+    "address": "",
+    "createdAt": "2026-06-26T10:52:40.168Z",
+    "updatedAt": "2026-06-26T10:52:40.168Z"
+  }
+]
