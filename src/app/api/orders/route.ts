@@ -44,7 +44,7 @@ export async function POST(req: NextRequest) {
       orderItems.push({
         productId: product.id,
         productName: product.name,
-        productImage: product.images[0] || '',
+        productImage: product.images[0] as string || '',
         price: product.price,
         quantity: item.quantity,
       });
@@ -53,7 +53,6 @@ export async function POST(req: NextRequest) {
 
     const deliveryFee = subtotal >= FREE_DELIVERY_THRESHOLD ? 0 : DELIVERY_FEE;
     const total = subtotal + deliveryFee;
-    const now = new Date().toISOString();
 
     const order = await createOrder({
       id: generateOrderId(),
@@ -65,20 +64,18 @@ export async function POST(req: NextRequest) {
       deliveryFee,
       total,
       paymentMethod,
-      paymentStatus: paymentMethod === 'cash' ? 'pending' : 'pending',
+      paymentStatus: 'pending',
       mpesaPhone: mpesaPhone || phone,
       status: 'pending',
       address,
       notes: notes || '',
-      createdAt: now,
-      updatedAt: now,
     });
 
     // Deduct stock
     for (const item of items) {
       const product = await getProductById(item.productId);
       if (product) {
-        await updateProduct(product.id, { stock: product.stock - item.quantity, updatedAt: now });
+        await updateProduct(product.id, { stock: product.stock - item.quantity });
       }
     }
 
