@@ -44,7 +44,7 @@ export async function POST(req: NextRequest) {
       orderItems.push({
         productId: product.id,
         productName: product.name,
-        productImage: product.images[0] as string || '',
+     productImage: (product.images as string[] | null)?.[0] ?? '',
         price: product.price,
         quantity: item.quantity,
       });

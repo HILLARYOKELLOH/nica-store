@@ -5,8 +5,17 @@ import { getProducts } from '@/lib/db';
 export const metadata = { title: 'Shop' };
 
 export default async function ShopPage() {
-  const products = await getProducts();
-  const activeProducts = products.filter(p => p.active);
+  const raw = await getProducts();
+  const activeProducts = raw
+    .filter(p => p.active)
+    .map(p => ({
+      ...p,
+      originalPrice: p.originalPrice ?? undefined,
+      images: (p.images as string[]) ?? [],
+      tags: (p.tags as string[]) ?? [],
+      createdAt: p.createdAt instanceof Date ? p.createdAt.toISOString() : p.createdAt,
+      updatedAt: p.updatedAt instanceof Date ? p.updatedAt.toISOString() : p.updatedAt,
+    }));
   const categories = [...new Set(activeProducts.map(p => p.category))].sort();
 
   return (

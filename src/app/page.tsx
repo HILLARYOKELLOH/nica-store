@@ -40,7 +40,17 @@ const HERO_PERKS = [
 ];
 
 export default async function HomePage() {
-  const allProducts = await getProducts();
+  
+  const raw = await getProducts();
+const allProducts = raw.map(p => ({
+  ...p,
+  originalPrice: p.originalPrice ?? undefined,
+  images: (p.images as string[]) ?? [],
+  tags: (p.tags as string[]) ?? [],
+  createdAt: p.createdAt instanceof Date ? p.createdAt.toISOString() : p.createdAt,
+  updatedAt: p.updatedAt instanceof Date ? p.updatedAt.toISOString() : p.updatedAt,
+}));
+
   const featured = allProducts
     .filter(p => p.featured && p.active)
     .slice(0, 8);

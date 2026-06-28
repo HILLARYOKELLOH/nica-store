@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getUserByEmail } from '@/lib/db';
 import { comparePassword, signToken, setAuthCookie, sanitizeUser } from '@/lib/auth';
+import { UserRole } from '@/types';
 
 export async function POST(req: NextRequest) {
   try {
@@ -19,8 +20,17 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ success: false, error: 'Invalid email or password' }, { status: 401 });
     }
 
-    const token = signToken({ id: user.id, email: user.email, role: user.role });
-    const res = NextResponse.json({ success: true, data: sanitizeUser(user), message: 'Logged in successfully' });
+const typedUser = {
+  ...user,
+  role: user.role as UserRole,
+  phone: user.phone ?? undefined,
+  address: user.address ?? undefined,
+  createdAt: user.createdAt.toISOString(),
+  updatedAt: user.updatedAt.toISOString(),
+};
+
+    const token = signToken({ id: typedUser.id, email: typedUser.email, role: typedUser.role });
+    const res = NextResponse.json({ success: true, data: sanitizeUser(typedUser), message: 'Logged in successfully' });
     res.headers.set('Set-Cookie', setAuthCookie(token));
     return res;
   } catch (err) {

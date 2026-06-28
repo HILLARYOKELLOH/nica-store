@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { v4 as uuidv4 } from 'uuid';
 import { getUserByEmail, createUser } from '@/lib/db';
 import { hashPassword, signToken, setAuthCookie, sanitizeUser } from '@/lib/auth';
+import { UserRole } from '@/types';
+
 
 export async function POST(req: NextRequest) {
   try {
@@ -30,8 +32,17 @@ export async function POST(req: NextRequest) {
       address: '',
     });
 
-    const token = signToken({ id: user.id, email: user.email, role: user.role });
-    const res = NextResponse.json({ success: true, data: sanitizeUser(user), message: 'Account created successfully' }, { status: 201 });
+const typedUser = {
+  ...user,
+  role: user.role as UserRole,
+  phone: user.phone ?? undefined,
+  address: user.address ?? undefined,
+  createdAt: user.createdAt.toISOString(),
+  updatedAt: user.updatedAt.toISOString(),
+};
+
+    const token = signToken({ id: typedUser.id, email: typedUser.email, role: typedUser.role });
+    const res = NextResponse.json({ success: true, data: sanitizeUser(typedUser), message: 'Account created successfully' }, { status: 201 });
     res.headers.set('Set-Cookie', setAuthCookie(token));
     return res;
   } catch (err) {

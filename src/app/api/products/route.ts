@@ -24,7 +24,7 @@ export async function GET(req: NextRequest) {
       products = products.filter(p =>
         p.name.toLowerCase().includes(q) ||
         p.description.toLowerCase().includes(q) ||
-        p.tags.some(t => t.toLowerCase().includes(q))
+     (p.tags as string[] | null)?.some(t => t.toLowerCase().includes(q))
       );
     }
     if (featured === 'true') {
@@ -67,20 +67,21 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ success: false, error: 'Required fields missing' }, { status: 400 });
     }
 
-    const now = new Date().toISOString();
-    const product = await createProduct({
-      id: 'prod_' + uuidv4().replace(/-/g, '').slice(0, 8),
-      name, description,
-      price: Number(price),
-      originalPrice: originalPrice ? Number(originalPrice) : undefined,
-      category, images: images || [],
-      stock: Number(stock) || 0,
-      rating: 0, reviewCount: 0,
-      tags: tags || [],
-      featured: !!featured,
-      active: true,
-      createdAt: now, updatedAt: now,
-    });
+  const now = new Date().toISOString();
+
+  const product = await createProduct({
+  id: 'prod_' + uuidv4().replace(/-/g, '').slice(0, 8),
+  name, description,
+  price: Number(price),
+  originalPrice: originalPrice ? Number(originalPrice) : undefined,
+  category, images: images || [],
+  stock: Number(stock) || 0,
+  rating: 0, reviewCount: 0,
+  tags: tags || [],
+  featured: !!featured,
+  active: true,
+  updatedAt: new Date().toISOString(),
+});
 
     return NextResponse.json({ success: true, data: product }, { status: 201 });
   } catch {
