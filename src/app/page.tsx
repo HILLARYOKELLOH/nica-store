@@ -41,8 +41,9 @@ const HERO_PERKS = [
 
 export default async function HomePage() {
   
-  const raw = await getProducts();
-const allProducts = raw.map(p => ({
+const raw = await getProducts();
+type RawProduct = typeof raw[number];
+const allProducts = raw.map((p: RawProduct) => ({
   ...p,
   originalPrice: p.originalPrice ?? undefined,
   images: (p.images as string[]) ?? [],
@@ -50,6 +51,7 @@ const allProducts = raw.map(p => ({
   createdAt: p.createdAt instanceof Date ? p.createdAt.toISOString() : p.createdAt,
   updatedAt: p.updatedAt instanceof Date ? p.updatedAt.toISOString() : p.updatedAt,
 }));
+
 
   const featured = allProducts
     .filter(p => p.featured && p.active)

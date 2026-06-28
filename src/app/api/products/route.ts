@@ -3,6 +3,8 @@ import { getProducts, createProduct } from '@/lib/db';
 import { getAuthUser } from '@/lib/auth';
 import { v4 as uuidv4 } from 'uuid';
 
+type Product = Awaited<ReturnType<typeof getProducts>>[number];
+
 export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
@@ -14,29 +16,28 @@ export async function GET(req: NextRequest) {
     const limit = parseInt(searchParams.get('limit') || '12');
 
     let products = await getProducts();
-    products = products.filter(p => p.active);
 
     if (category && category !== 'all') {
-      products = products.filter(p => p.category.toLowerCase() === category.toLowerCase());
+      products = products.filter((p: Product) => p.category.toLowerCase() === category.toLowerCase());
     }
     if (search) {
       const q = search.toLowerCase();
-      products = products.filter(p =>
+      products = products.filter((p: Product) =>
         p.name.toLowerCase().includes(q) ||
         p.description.toLowerCase().includes(q) ||
-     (p.tags as string[] | null)?.some(t => t.toLowerCase().includes(q))
+        (p.tags as string[] | null)?.some(t => t.toLowerCase().includes(q))
       );
     }
     if (featured === 'true') {
-      products = products.filter(p => p.featured);
+      products = products.filter((p: Product) => p.featured);
     }
 
     switch (sort) {
-      case 'price-asc': products.sort((a, b) => a.price - b.price); break;
-      case 'price-desc': products.sort((a, b) => b.price - a.price); break;
-      case 'rating': products.sort((a, b) => b.rating - a.rating); break;
-      case 'popular': products.sort((a, b) => b.reviewCount - a.reviewCount); break;
-      default: products.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+      case 'price-asc': products.sort((a: Product, b: Product) => a.price - b.price); break;
+      case 'price-desc': products.sort((a: Product, b: Product) => b.price - a.price); break;
+      case 'rating': products.sort((a: Product, b: Product) => b.rating - a.rating); break;
+      case 'popular': products.sort((a: Product, b: Product) => b.reviewCount - a.reviewCount); break;
+      default: products.sort((a: Product, b: Product) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
     }
 
     const total = products.length;
@@ -67,21 +68,19 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ success: false, error: 'Required fields missing' }, { status: 400 });
     }
 
-  const now = new Date().toISOString();
-
-  const product = await createProduct({
-  id: 'prod_' + uuidv4().replace(/-/g, '').slice(0, 8),
-  name, description,
-  price: Number(price),
-  originalPrice: originalPrice ? Number(originalPrice) : undefined,
-  category, images: images || [],
-  stock: Number(stock) || 0,
-  rating: 0, reviewCount: 0,
-  tags: tags || [],
-  featured: !!featured,
-  active: true,
-  updatedAt: new Date().toISOString(),
-});
+    const product = await createProduct({
+      id: 'prod_' + uuidv4().replace(/-/g, '').slice(0, 8),
+      name, description,
+      price: Number(price),
+      originalPrice: originalPrice ? Number(originalPrice) : undefined,
+      category, images: images || [],
+      stock: Number(stock) || 0,
+      rating: 0, reviewCount: 0,
+      tags: tags || [],
+      featured: !!featured,
+      active: true,
+      updatedAt: new Date().toISOString(),
+    });
 
     return NextResponse.json({ success: true, data: product }, { status: 201 });
   } catch {

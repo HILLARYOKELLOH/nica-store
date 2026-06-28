@@ -1,4 +1,7 @@
 'use client';
+
+export const dynamic = 'force-dynamic';
+
 import Link from 'next/link';
 import { useAuthStore } from '@/store';
 import { Package, LogOut } from 'lucide-react';
